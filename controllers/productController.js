@@ -37,3 +37,21 @@ exports.deleteById = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+exports.getByCategory = async (req, res) => {
+    try {
+      const products = await Product.getByCategory(req.params.category);
+      res.json(products);
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  };
+  
+  exports.getByName = async (req, res) => {
+    try {
+      const products = await Product.getByName(req.query.name);
+      res.json(products);
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  };
