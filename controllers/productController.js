@@ -55,3 +55,13 @@ exports.getByCategory = async (req, res) => {
       res.status(500).json({ error: "Internal Server Error" });
     }
   };
+  exports.updateById = async (req, res) => {
+    try {
+      const result = await Product.updateById(req.params.id, req.body);
+      if (result === 0) return res.status(404).json({ error: "Product not found" });
+      res.json({ message: "Product updated successfully" });
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  };
+  
