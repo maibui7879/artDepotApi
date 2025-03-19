@@ -38,30 +38,66 @@ exports.deleteById = async (req, res) => {
   }
 };
 
+exports.updateById = async (req, res) => {
+  try {
+    const result = await Product.updateById(req.params.id, req.body);
+    if (result === 0) return res.status(404).json({ error: "Product not found" });
+    res.json({ message: "Product updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 exports.getByCategory = async (req, res) => {
-    try {
-      const products = await Product.getByCategory(req.params.category);
-      res.json(products);
-    } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  };
-  
-  exports.getByName = async (req, res) => {
-    try {
-      const products = await Product.getByName(req.query.name);
-      res.json(products);
-    } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  };
-  exports.updateById = async (req, res) => {
-    try {
-      const result = await Product.updateById(req.params.id, req.body);
-      if (result === 0) return res.status(404).json({ error: "Product not found" });
-      res.json({ message: "Product updated successfully" });
-    } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  };
-  
+  try {
+    const products = await Product.getByCategory(req.params.category);
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+exports.getBySubCategory = async (req, res) => {
+  try {
+    const products = await Product.getBySubCategory(req.params.subcategory);
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+exports.getByBrand = async (req, res) => {
+  try {
+    const products = await Product.getByBrand(req.params.brand);
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+exports.getCategories = async (req, res) => {
+  try {
+    const categories = await Product.getCategories();
+    res.json(categories);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+exports.getSubCategories = async (req, res) => {
+  try {
+    const subcategories = await Product.getSubCategories();
+    res.json(subcategories);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+exports.getBrands = async (req, res) => {
+  try {
+    const brands = await Product.getBrands();
+    res.json(brands);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};

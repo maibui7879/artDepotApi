@@ -3,7 +3,11 @@ const router = express.Router();
 const productController = require("../controllers/productController");
 
 router.get("/category/:category", productController.getByCategory);
-router.get("/search", productController.getByName);
+router.get("/subcategory/:subcategory", productController.getBySubCategory);
+router.get("/brand/:brand", productController.getByBrand);
+router.get("/categories", productController.getCategories);
+router.get("/subcategories", productController.getSubCategories);
+router.get("/brands", productController.getBrands);
 router.get("/:id", productController.getById);
 router.get("/", productController.getAll);
 router.post("/", productController.create);
