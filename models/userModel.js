@@ -2,17 +2,17 @@ const db = require("../config/db");
 
 const User = {
   getAll: async () => {
-    const [rows] = await db.query("SELECT id, ten, username, so_dien_thoai, email, ngay_sinh, dia_chi FROM Users");
+    const [rows] = await db.query("SELECT id, ten, username, password, so_dien_thoai, email, ngay_sinh, dia_chi FROM Users");
     return rows;
   },
 
   getById: async (id) => {
-    const [rows] = await db.query("SELECT id, ten, username, so_dien_thoai, email, ngay_sinh, dia_chi FROM Users WHERE id = ?", [id]);
+    const [rows] = await db.query("SELECT id, ten, username, password, so_dien_thoai, email, ngay_sinh, dia_chi FROM Users WHERE id = ?", [id]);
     return rows[0];
   },
 
   getByUsername: async (username) => {
-    const [rows] = await db.query("SELECT id, ten, username, so_dien_thoai, email, ngay_sinh, dia_chi FROM Users WHERE username = ?", [username]);
+    const [rows] = await db.query("SELECT id, ten, username, password, so_dien_thoai, email, ngay_sinh, dia_chi FROM Users WHERE username = ?", [username]);
     return rows[0];
   },
 
@@ -26,10 +26,10 @@ const User = {
   },
 
   update: async (id, data) => {
-    const { ten, username, so_dien_thoai, email, ngay_sinh, dia_chi } = data;
+    const { ten, username, password, so_dien_thoai, email, ngay_sinh, dia_chi } = data;
     const [result] = await db.query(
-      "UPDATE Users SET ten=?, username=?, so_dien_thoai=?, email=?, ngay_sinh=?, dia_chi=? WHERE id=?",
-      [ten, username, so_dien_thoai, email, ngay_sinh, dia_chi, id]
+      "UPDATE Users SET ten=?, username=?, password=?, so_dien_thoai=?, email=?, ngay_sinh=?, dia_chi=? WHERE id=?",
+      [ten, username, password, so_dien_thoai, email, ngay_sinh, dia_chi, id]
     );
     return result.affectedRows;
   },
