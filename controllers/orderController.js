@@ -1,5 +1,4 @@
 const Order = require("../models/orderModel");
-const Product = require("../models/productModel"); // Import model sản phẩm
 
 exports.getAll = async (req, res) => {
   try {
@@ -58,18 +57,7 @@ exports.getByUserPaymentTransport = async (req, res) => {
 
 exports.create = async (req, res) => {
   try {
-    const { list_hang } = req.body;
     const id = await Order.create(req.body);
-
-    // Cập nhật số lượng tồn kho
-    for (const item of list_hang) {
-      const product = await Product.getById(item.id);
-      if (product) {
-        const newStock = Math.max(0, product.so_luong_ton_kho - item.quantity);
-        await Product.updateStock(item.id, newStock);
-      }
-    }
-
     res.status(201).json({ id });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
