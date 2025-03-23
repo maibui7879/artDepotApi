@@ -27,24 +27,6 @@ const Cart = {
     return result.affectedRows;
   },
 
-  addProductToCart: async (userId, product) => {
-    const cart = await Cart.getByUserId(userId);
-    let products = cart ? JSON.parse(cart.san_pham) : [];
-
-    const existingProduct = products.find((p) => p.id === product.id);
-    if (existingProduct) {
-      existingProduct.quantity += product.quantity;
-    } else {
-      products.push(product);
-    }
-
-    if (cart) {
-      await Cart.update(userId, products);
-    } else {
-      await Cart.create(userId, products);
-    }
-  },
-
   deleteByUserId: async (userId) => {
     const [result] = await db.query("DELETE FROM Gio_Hang WHERE id_khach_hang = ?", [userId]);
     return result.affectedRows;

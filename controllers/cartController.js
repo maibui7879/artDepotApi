@@ -11,9 +11,9 @@ exports.getAll = async (req, res) => {
 
 exports.getByUserId = async (req, res) => {
   try {
-    const cart = await Cart.getByUserId(req.params.userId);
-    if (!cart) return res.status(404).json({ error: "Cart not found" });
-    res.json(cart);
+    const products = await Cart.getByUserId(req.params.userId, req.query.productId);
+    if (!products) return res.status(404).json({ error: "No matching products found" });
+    res.json(products);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -49,53 +49,18 @@ exports.deleteByUserId = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
-exports.addProductToCart = async (req, res) => {
+exports.updateCart = async (req, res) => {
   try {
-    const { userId, id, quantity } = req.body;
-
-    // Kiểm tra userId hợp lệ
-    if (!userId || !id || !quantity) {
-      return res.status(400).json({ error: "Thiếu thông tin bắt buộc" });
+    const { userId, products } = req.body;
+    if (!userId || !products) {
+      return res.status(400).json({ error: "Missing userId or products" });
     }
 
-    // Lấy thông tin sản phẩm từ database
-    const product = await Product.getById(id);
-    if (!product) {
-      return res.status(404).json({ error: "Sản phẩm không tồn tại" });
-    }
+    const result = await Cart.update(userId, products);
+    if (result === 0) return res.status(404).json({ error: "Cart not found" });
 
-    // Chuẩn bị dữ liệu sản phẩm
-    const productData = {
-      id: product.id,
-      name: product.ten,
-      quantity,
-      price: parseFloat(product.don_gia),
-      image: product.anh_minh_hoa_chinh,
-    };
-
-    // Lấy giỏ hàng của user
-    let cart = await Cart.getByUserId(userId);
-    let products = cart ? JSON.parse(cart.san_pham) : [];
-
-    // Kiểm tra sản phẩm đã tồn tại chưa
-    const index = products.findIndex((item) => item.id === id);
-    if (index !== -1) {
-      products[index].quantity += quantity;
-    } else {
-      products.push(productData);
-    }
-
-    // Cập nhật giỏ hàng
-    if (cart) {
-      await Cart.update(userId, products);
-    } else {
-      await Cart.create(userId, products);
-    }
-
-    res.json({ message: "Sản phẩm đã được thêm vào giỏ hàng" });
+    res.json({ message: "Cart updated successfully" });
   } catch (error) {
-    console.error("Lỗi:", error);
-    res.status(500).json({ error: "Lỗi server" });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
