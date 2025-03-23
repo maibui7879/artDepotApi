@@ -6,13 +6,9 @@ const Cart = {
     return rows;
   },
 
-  getByUserId: async (userId, productId) => {
+  getByUserId: async (userId) => {
     const [rows] = await db.query("SELECT * FROM Gio_Hang WHERE id_khach_hang = ?", [userId]);
-    if (rows.length === 0) return null;
-    const cart = rows[0];
-    const products = JSON.parse(cart.san_pham);
-    const filteredProducts = products.filter((p) => p.id === productId);
-    return filteredProducts.length ? filteredProducts : null;
+    return rows.length ? rows[0] : null;
   },
 
   create: async (userId, products) => {
