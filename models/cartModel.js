@@ -1,36 +1,17 @@
 const db = require("../config/db");
 
 const Cart = {
-  getAll: async () => {
-    const [rows] = await db.query("SELECT * FROM Gio_Hang");
-    return rows;
-  },
+  getAll: () => db.query("SELECT * FROM cart"),
 
-  getByUserId: async (userId) => {
-    const [rows] = await db.query("SELECT * FROM Gio_Hang WHERE id_khach_hang = ?", [userId]);
-    return rows.length ? rows[0] : null;
-  },
+  getByUserId: (userId) => db.query("SELECT * FROM cart WHERE userId = ?", [userId]),
 
-  create: async (userId, products) => {
-    const [result] = await db.query("INSERT INTO Gio_Hang (id_khach_hang, san_pham) VALUES (?, ?)", [
-      userId,
-      JSON.stringify(products),
-    ]);
-    return result.insertId;
-  },
+  create: (userId, productId, quantity) =>
+    db.query("INSERT INTO cart (userId, productId, quantity) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE quantity = quantity + ?", 
+      [userId, productId, quantity, quantity]),
 
-  update: async (userId, products) => {
-    const [result] = await db.query("UPDATE Gio_Hang SET san_pham = ? WHERE id_khach_hang = ?", [
-      JSON.stringify(products),
-      userId,
-    ]);
-    return result.affectedRows;
-  },
+  deleteByUserId: (userId) => db.query("DELETE FROM cart WHERE userId = ?", [userId]),
 
-  deleteByUserId: async (userId) => {
-    const [result] = await db.query("DELETE FROM Gio_Hang WHERE id_khach_hang = ?", [userId]);
-    return result.affectedRows;
-  },
+  deleteProduct: (userId, productId) => db.query("DELETE FROM cart WHERE userId = ? AND productId = ?", [userId, productId])
 };
 
 module.exports = Cart;
