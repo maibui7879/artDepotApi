@@ -49,8 +49,12 @@ exports.removeProduct = async (req, res) => {
 
 exports.deleteById = async (req, res) => {
   try {
-    await Cart.deleteById(req.params.id);
-    res.json({ message: "Product removed from cart" });
+    const success = await Cart.deleteById(req.params.id);
+    if (success) {
+      res.json({ message: "Product removed from cart" });
+    } else {
+      res.status(404).json({ error: "Product not found" });
+    }
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }

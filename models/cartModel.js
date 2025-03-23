@@ -27,7 +27,8 @@ const Cart = {
   },
 
   deleteById: async (id) => {
-    await db.query("DELETE FROM cart WHERE id = ?", [id]);
+    const [result] = await db.query("DELETE FROM cart WHERE id = ?", [id]);
+    return result.affectedRows > 0; 
   }
 };
 
