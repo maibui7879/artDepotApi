@@ -1,4 +1,5 @@
 const Cart = require("../models/cartModel");
+
 exports.getAll = async (req, res) => {
   try {
     const carts = await Cart.getAll();
@@ -45,9 +46,10 @@ exports.removeProduct = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-exports.delete = async (req, res) => {
+
+exports.deleteById = async (req, res) => {
   try {
-    await Cart.delete(req.params.userId);
+    await Cart.deleteById(req.params.id);
     res.json({ message: "Product removed from cart" });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });

@@ -3,7 +3,7 @@ const db = require("../config/db");
 const Cart = {
   getAll: async () => {
     const [rows] = await db.query("SELECT * FROM cart");
-    return rows; // Trả về trực tiếp danh sách sản phẩm
+    return rows;
   },
 
   getByUserId: async (userId) => {
@@ -25,7 +25,8 @@ const Cart = {
   deleteProduct: async (userId, productId) => {
     await db.query("DELETE FROM cart WHERE userId = ? AND productId = ?", [userId, productId]);
   },
-  delete: async (userId, productId) => {
+
+  deleteById: async (id) => {
     await db.query("DELETE FROM cart WHERE id = ?", [id]);
   }
 };
