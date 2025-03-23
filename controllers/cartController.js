@@ -64,3 +64,43 @@ exports.updateCart = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+exports.addToCart = async (req, res) => {
+  try {
+    const { userId, product } = req.body;
+    const cart = await Cart.getByUserId(userId);
+    let products = cart ? JSON.parse(cart.san_pham) : [];
+
+    const existingProduct = products.find((p) => p.productId === product.productId);
+    if (existingProduct) {
+      existingProduct.quantity += product.quantity;
+    } else {
+      products.push(product);
+    }
+
+    if (cart) {
+      await Cart.update(userId, products);
+    } else {
+      await Cart.create(userId, products);
+    }
+
+    res.json({ message: "Product added to cart successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+exports.removeFromCart = async (req, res) => {
+  try {
+    const { userId, productId } = req.body;
+    const cart = await Cart.getByUserId(userId);
+    if (!cart) return res.status(404).json({ error: "Cart not found" });
+
+    let products = JSON.parse(cart.san_pham);
+    products = products.filter((p) => p.productId !== productId);
+
+    await Cart.update(userId, products);
+    res.json({ message: "Product removed from cart successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
