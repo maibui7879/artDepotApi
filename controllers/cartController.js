@@ -49,3 +49,13 @@ exports.deleteByUserId = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+exports.addProductToCart = async (req, res) => {
+  try {
+    const { userId, product } = req.body;
+    await Cart.addProductToCart(userId, product);
+    res.json({ message: "Sản phẩm đã được thêm vào giỏ hàng" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
