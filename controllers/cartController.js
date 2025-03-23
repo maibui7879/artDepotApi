@@ -45,3 +45,11 @@ exports.removeProduct = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+exports.delete = async (req, res) => {
+  try {
+    await Cart.delete(req.params.userId);
+    res.json({ message: "Product removed from cart" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};

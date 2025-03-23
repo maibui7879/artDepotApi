@@ -24,6 +24,9 @@ const Cart = {
 
   deleteProduct: async (userId, productId) => {
     await db.query("DELETE FROM cart WHERE userId = ? AND productId = ?", [userId, productId]);
+  },
+  delete: async (userId, productId) => {
+    await db.query("DELETE FROM cart WHERE id = ?", [id]);
   }
 };
 
