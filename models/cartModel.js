@@ -1,17 +1,30 @@
 const db = require("../config/db");
 
 const Cart = {
-  getAll: () => db.query("SELECT * FROM cart"),
+  getAll: async () => {
+    const [rows] = await db.query("SELECT * FROM cart");
+    return rows; // Trả về trực tiếp danh sách sản phẩm
+  },
 
-  getByUserId: (userId) => db.query("SELECT * FROM cart WHERE userId = ?", [userId]),
+  getByUserId: async (userId) => {
+    const [rows] = await db.query("SELECT * FROM cart WHERE userId = ?", [userId]);
+    return rows;
+  },
 
-  create: (userId, productId, quantity) =>
-    db.query("INSERT INTO cart (userId, productId, quantity) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE quantity = quantity + ?", 
-      [userId, productId, quantity, quantity]),
+  create: async (userId, productId, quantity) => {
+    await db.query(
+      "INSERT INTO cart (userId, productId, quantity) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE quantity = quantity + ?",
+      [userId, productId, quantity, quantity]
+    );
+  },
 
-  deleteByUserId: (userId) => db.query("DELETE FROM cart WHERE userId = ?", [userId]),
+  deleteByUserId: async (userId) => {
+    await db.query("DELETE FROM cart WHERE userId = ?", [userId]);
+  },
 
-  deleteProduct: (userId, productId) => db.query("DELETE FROM cart WHERE userId = ? AND productId = ?", [userId, productId])
+  deleteProduct: async (userId, productId) => {
+    await db.query("DELETE FROM cart WHERE userId = ? AND productId = ?", [userId, productId]);
+  }
 };
 
 module.exports = Cart;

@@ -1,5 +1,4 @@
 const Cart = require("../models/cartModel");
-
 exports.getAll = async (req, res) => {
   try {
     const carts = await Cart.getAll();
