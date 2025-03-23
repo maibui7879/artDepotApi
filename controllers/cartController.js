@@ -11,9 +11,9 @@ exports.getAll = async (req, res) => {
 
 exports.getByUserId = async (req, res) => {
   try {
-    const products = await Cart.getByUserId(req.params.userId, req.query.productId);
-    if (!products) return res.status(404).json({ error: "No matching products found" });
-    res.json(products);
+    const cart = await Cart.getByUserId(req.params.userId);
+    if (!cart) return res.status(404).json({ error: "Cart not found" });
+    res.json(cart);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
