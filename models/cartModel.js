@@ -31,5 +31,9 @@ const Cart = {
     return result.affectedRows > 0; 
   }
 };
+  getById: async (id) => {
+    const [rows] = await db.query("SELECT * FROM cart WHERE id = ?", [id]);
+    return rows.length ? rows[0] : null;
+  }
 
 module.exports = Cart;

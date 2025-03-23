@@ -59,3 +59,16 @@ exports.deleteById = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+exports.getById = async (req, res) => {
+  try {
+    const cartItem = await Cart.getById(req.params.id);
+    if (cartItem) {
+      res.json(cartItem);
+    } else {
+      res.status(404).json({ error: "Cart item not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
