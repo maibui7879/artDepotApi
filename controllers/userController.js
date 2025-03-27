@@ -31,12 +31,11 @@ exports.getByUsername = async (req, res) => {
 
 exports.create = async (req, res) => {
   try {
-    console.log("Received data:", req.body); // Kiểm tra dữ liệu đầu vào
-    const id = await User.create(req.body);
+    console.log("Received data:", req.body); 
     res.status(201).json({ id });
   } catch (error) {
-    console.error("Database error:", error); // In lỗi chi tiết
-    res.status(500).json({ error: error.message }); // Trả về lỗi cụ thể
+    console.error("Database error:", error); 
+    res.status(500).json({ error: error.message }); 
   }
 };
 

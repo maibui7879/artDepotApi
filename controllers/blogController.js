@@ -5,7 +5,6 @@ exports.getAll = async (req, res) => {
     const blogs = await Blog.getAll();
     res.json(blogs);
   } catch (error) {
-    console.error(error); // Thêm dòng này để log lỗi chi tiết
     res.status(500).json({ error: "Lỗi khi lấy danh sách blog" ,error});
   }
 };
